@@ -92,57 +92,15 @@
         </tr>
     </table>
 
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
-    import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs
-    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-    apiKey: "AIzaSyBzZt88jFOr7b2VRMCklpQ3Solpey2So7o",
-    authDomain: "computer-coaching-management.firebaseapp.com",
-    projectId: "computer-coaching-management",
-    storageBucket: "computer-coaching-management.firebasestorage.app",
-    messagingSenderId: "51257584821",
-    appId: "1:51257584821:web:81b3fba2048de4197ba2fc"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window.db = db;
-    window.collection = collection;
-    window.addDoc = addDoc;
-    window.getDocs = getDocs;
-
-    </script>
-
-    <script src="script.js"></script>
     <div id="setupForm" class="form-box" style="display:none;">
-
-        <h2>Coaching Setup</h2>
-
-        <input type="text" id="coachingName" placeholder="Coaching Name">
-        <input type="text" id="ownerName" placeholder="Owner Name">
-        <input type="text" id="mobile" placeholder="Mobile Number">
-        <input type="text" id="address" placeholder="Address">
-
-        <input type="file" id="logoFile" accept="image/*">
-
-        <button onclick="saveSetup()">
-            Save Details
-        </button>
-
+        ...
     </div>
 
     <script src="script.js"></script>
 
-</body>
 
-</html>
 
 </body>
 
