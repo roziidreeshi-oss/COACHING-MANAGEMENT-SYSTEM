@@ -37,7 +37,7 @@
         <button class="add-btn" onclick="showSetup()">
             ⚙️ Setup
         </button>
-        </button>
+    
 
     </div>
     </div>
@@ -94,9 +94,25 @@
 
 
 
-    <div id="setupForm" class="form-box" style="display:none;">
-        ...
-    </div>
+   <div id="setupForm" class="form-box" style="display:none;">
+
+    <h2>Coaching Setup</h2>
+
+    <input type="text" id="coachingName" placeholder="Coaching Name">
+
+    <input type="text" id="ownerName" placeholder="Owner Name">
+
+    <input type="text" id="mobile" placeholder="Mobile Number">
+
+    <input type="text" id="address" placeholder="Address">
+
+    <input type="file" id="logoFile" accept="image/*">
+
+    <button onclick="saveSetup()">
+        Save Details
+    </button>
+
+</div>
 
     <script src="script.js"></script>
 
