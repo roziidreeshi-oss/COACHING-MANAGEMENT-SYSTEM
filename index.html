@@ -1,61 +1,63 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title> R S Computer Coaching Management</title>
     <link rel="stylesheet" href="style.css">
 </head>
 </div>
+
 <body>
-   
+
     <div class="top-header">
 
-    <div>
-        <h1>Computer Coaching Management System</h1>
+        <div>
+            <h1>Computer Coaching Management System</h1>
+        </div>
+
+        <div>
+            <img id="logoPreview">
+        </div>
+
     </div>
 
-    <div>
-        <img id="logoPreview">
+    <div class="button-group">
+
+        <button class="add-btn" onclick="showForm()">
+            ➕ Add Student
+        </button>
+
+        <button class="add-btn" onclick="showRecords()">
+            📋 View Records
+        </button>
+
+        <button class="add-btn" onclick="searchStudent()">
+            🔍 Search Student
+        </button>
+        <button class="add-btn" onclick="showSetup()">
+            ⚙️ Setup
+        </button>
+        </button>
+
     </div>
-
-</div>
-
-      <div class="button-group">
-
-    <button class="add-btn" onclick="showForm()">
-        ➕ Add Student
-    </button>
-
-    <button class="add-btn" onclick="showRecords()">
-        📋 View Records
-    </button>
-
-    <button class="add-btn" onclick="searchStudent()">
-        🔍 Search Student
-    </button>
-    <button class="add-btn" onclick="showSetup()">
-    ⚙️ Setup
-</button>
-</button>
-
-</div>
     </div>
 
     <div class="dashboard">
 
-       <div class="card students-card">
-    <h3>Total Students</h3>
-    <p id="studentCount">0</p>
-</div>
+        <div class="card students-card">
+            <h3>Total Students</h3>
+            <p id="studentCount">0</p>
+        </div>
 
-<div class="card fees-card">
-    <h3>Total Fees</h3>
-    <p id="totalFeeAmount">₹0</p>
-</div>
+        <div class="card fees-card">
+            <h3>Total Fees</h3>
+            <p id="totalFeeAmount">₹0</p>
+        </div>
 
-<div class="card due-card">
-    <h3>Due Fees</h3>
-    <p id="dueFeeAmount">₹0</p>
-</div>
+        <div class="card due-card">
+            <h3>Due Fees</h3>
+            <p id="dueFeeAmount">₹0</p>
+        </div>
     </div>
 
     <div id="studentForm" class="form-box">
@@ -86,60 +88,62 @@
             <th>Due Fees</th>
             <th>Action</th>
             <th>Receipt</th>
-    
+
         </tr>
     </table>
- <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs
+    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBzZt88jFOr7b2VRMCklpQ3Solpey2So7o",
-  authDomain: "computer-coaching-management.firebaseapp.com",
-  projectId: "computer-coaching-management",
-  storageBucket: "computer-coaching-management.firebasestorage.app",
-  messagingSenderId: "51257584821",
-  appId: "1:51257584821:web:81b3fba2048de4197ba2fc"
-};
+    const firebaseConfig = {
+    apiKey: "AIzaSyBzZt88jFOr7b2VRMCklpQ3Solpey2So7o",
+    authDomain: "computer-coaching-management.firebaseapp.com",
+    projectId: "computer-coaching-management",
+    storageBucket: "computer-coaching-management.firebasestorage.app",
+    messagingSenderId: "51257584821",
+    appId: "1:51257584821:web:81b3fba2048de4197ba2fc"
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-window.db = db;
-window.collection = collection;
-window.addDoc = addDoc;
-window.getDocs = getDocs;
+    window.db = db;
+    window.collection = collection;
+    window.addDoc = addDoc;
+    window.getDocs = getDocs;
 
-</script>
+    </script>
 
     <script src="script.js"></script>
     <div id="setupForm" class="form-box" style="display:none;">
 
-    <h2>Coaching Setup</h2>
+        <h2>Coaching Setup</h2>
 
-    <input type="text" id="coachingName"
-           placeholder="Coaching Name">
+        <input type="text" id="coachingName" placeholder="Coaching Name">
+        <input type="text" id="ownerName" placeholder="Owner Name">
+        <input type="text" id="mobile" placeholder="Mobile Number">
+        <input type="text" id="address" placeholder="Address">
 
-    <input type="text" id="ownerName"
-           placeholder="Owner Name">
+        <input type="file" id="logoFile" accept="image/*">
 
-    <input type="text" id="mobile"
-           placeholder="Mobile Number">
+        <button onclick="saveSetup()">
+            Save Details
+        </button>
 
-    <input type="text" id="address"
-           placeholder="Address">
-    <input type="file" id="logoFile" accept="image/*">
-    <button onclick="saveSetup()">
-        Save Details
-    </button>
+    </div>
 
+    <script src="script.js"></script>
 
 </body>
+
+</html>
+
+</body>
+
 </html>
