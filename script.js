@@ -1,3 +1,4 @@
+alert("Script Loaded");
 let students = JSON.parse(localStorage.getItem("students")) || [];
 let totalStudents = 0;
 let totalFeesAmount = 0;
