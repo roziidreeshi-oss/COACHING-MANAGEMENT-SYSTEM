@@ -12,7 +12,7 @@
     <div class="top-header">
 
         <div>
-            <h1>Computer Coaching Management System</h1>
+            <h1>R S Computer Coaching Management System</h1>
         </div>
 
         <div>
@@ -37,9 +37,30 @@
         <button class="add-btn" onclick="showSetup()">
             ⚙️ Setup
         </button>
-    
+    <button class="add-btn" onclick="showFeesForm()">
+    💰 Fees Entry
+</button>
+</div>
+    <div id="feesForm" class="form-box" style="display:none;">
 
-    </div>
+    <h2>Monthly Fees Entry</h2>
+
+    <select id="studentSelect"></select>
+
+    <input type="text" id="feesCourse" placeholder="Course" readonly>
+<input type="number" id="studentTotalFees" placeholder="Course Total Fees">
+    <input type="month" id="feesMonth">
+
+   
+    <input type="number" id="totalFees" placeholder="Total Fees">
+
+<input type="number" id="paidFees" placeholder="Paid Fees">
+
+    <button onclick="saveFees()">
+        Save Fees
+    </button>
+
+</div>
     </div>
 
     <div class="dashboard">
@@ -63,14 +84,19 @@
     <div id="studentForm" class="form-box">
 
         <input type="text" id="name" placeholder="Student Name">
+ <input type="text" id="fatherName" placeholder="Father Name">
+ <input type="date" id="dob">
 
         <input type="number" id="age" placeholder="Student Age">
 
         <input type="text" id="course" placeholder="Course Name">
 
-        <input type="number" id="totalFees" placeholder="Total Fees">
+        
+       
+       
+        <input type="text" id="mobileNo" placeholder="Mobile Number">
 
-        <input type="number" id="paidFees" placeholder="Paid Fees">
+        <input type="text" id="studentAddress" placeholder="Address">
 
         <button onclick="addStudent()">
             Save Student
@@ -81,17 +107,28 @@
     <table id="studentTable">
         <tr>
             <th>Name</th>
-            <th>Age</th>
-            <th>Course</th>
-            <th>Total Fees</th>
-            <th>Paid Fees</th>
-            <th>Due Fees</th>
-            <th>Action</th>
-            <th>Receipt</th>
-
+<th>Father Name</th>
+<th>DOB</th>
+<th>Age</th>
+<th>Course</th>
+<th>Mobile</th>
+<th>Action</th>
+<th>address</th>
         </tr>
     </table>
+<h2>Fees Records</h2>
 
+<table id="feesTable">
+    <tr>
+        <th>Student Name</th>
+        <th>Course</th>
+        <th>Month</th>
+        <th>Total Fees</th>
+        <th>Paid Fees</th>
+        <th>Due Fees</th>
+        <th>Receipt</th>
+    </tr>
+</table>
 
 
    <div id="setupForm" class="form-box" style="display:none;">
