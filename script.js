@@ -1,17 +1,85 @@
 
+//==============================
+// R S COMPUTER COACHING
+// MANAGEMENT SYSTEM
+//==============================
+
+// Local Storage Data
+
 let students = JSON.parse(localStorage.getItem("students")) || [];
 
-let totalStudents = 0;
-let totalFeesAmount = 0;
-let totalDueAmount = 0;
+let courses = JSON.parse(localStorage.getItem("courses")) || [];
 
-function showForm() {
-    document.getElementById("studentForm").style.display = "block";
-}
+let feesRecords = JSON.parse(localStorage.getItem("feesRecords")) || [];
+
+
+//==============================
+// PAGE LOAD
+//==============================
+
+window.onload = function () {
+
+    loadSetup();
+
+    loadCourses();
+
+    loadCourseTable();
+
+    loadStudents();
+
+    loadFeesRecords();
+
+    loadDashboard();
+
+};
+
+
+//==============================
+// POPUP FUNCTIONS
+//==============================
 
 function showSetup() {
+
     document.getElementById("setupForm").style.display = "block";
+
 }
+
+function closeSetup() {
+
+    document.getElementById("setupForm").style.display = "none";
+
+}
+
+function showForm() {
+
+    document.getElementById("studentForm").style.display = "block";
+
+}
+
+function closeStudentForm() {
+
+    document.getElementById("studentForm").style.display = "none";
+
+}
+
+function showFeesForm() {
+
+    document.getElementById("feesForm").style.display = "block";
+
+    loadStudentDropdown();
+
+}
+
+function closeFeesForm() {
+
+    document.getElementById("feesForm").style.display = "none";
+
+}
+
+
+//==============================
+// SAVE COACHING DETAILS
+//==============================
 
 function saveSetup() {
 
@@ -45,300 +113,33 @@ function saveSetup() {
         reader.onload = function (e) {
 
             localStorage.setItem(
-                "logoData",
+                "logo",
                 e.target.result
             );
 
             document.getElementById("logoPreview").src =
                 e.target.result;
 
-            alert("Setup Saved Successfully");
-        };
+        }
 
         reader.readAsDataURL(file);
 
-    } else {
-document.getElementById("setupForm").style.display = "none";
-        alert("Setup Saved Successfully");
     }
-}
 
-function addStudent() {
+    document.getElementById("coachingTitle").innerText =
+        document.getElementById("coachingName").value;
 
-    let name =
-        document.getElementById("name").value;
+    alert("Setup Saved");
 
-         let fatherName =
-    document.getElementById("fatherName").value;
-    let dob =
-    document.getElementById("dob").value;
-
-    let age =
-        document.getElementById("age").value;
-
-    let course =
-        document.getElementById("course").value;
-
-   
-
-
-let mobileNo =
-    document.getElementById("mobileNo").value;
-
-let studentAddress =
-    document.getElementById("studentAddress").value;
-
- let studentTotalFees =
-Number(document.getElementById("studentTotalFees").value);  
-
-    let student = {
-    name,
-    fatherName,
-    dob,
-    age,
-    mobileNo,
-    studentAddress,
-    course
-};
-
-    students.push(student);
-
-    localStorage.setItem(
-        "students",
-        JSON.stringify(students)
-    );
-
-    loadStudents();
-
-    document.getElementById("name").value = "";
-     document.getElementById("fatherName").value = "";
-     document.getElementById("dob").value = "";
-    document.getElementById("age").value = "";
-    document.getElementById("course").value = "";
-document.getElementById("mobileNo").value = "";
-document.getElementById("studentAddress").value = "";
-    document.getElementById("studentForm").style.display = "none";
-}
-
-function loadStudents() {
-
-    let table =
-        document.getElementById("studentTable");
-
-   table.innerHTML = `
-<tr>
-    <th>Name</th>
-    <th>Father Name</th>
-    <th>DOB</th>
-    <th>Age</th>
-    <th>Course</th>
-    <th>Mobile</th>
-    <th>Action</th>
-    <th>Address</th>
-</tr>
-`;
-
-    totalStudents = 0;
-    totalFeesAmount = 0;
-    totalDueAmount = 0;
-
-    students.forEach((student, index) => {
-
-        let row = table.insertRow();
-
-
-row.insertCell(0).innerText = student.name;
-row.insertCell(1).innerText = student.fatherName;
-row.insertCell(2).innerText = student.dob;
-row.insertCell(3).innerText = student.age;
-row.insertCell(4).innerText = student.course;
-row.insertCell(5).innerText = student.mobileNo;
-let actionCell = row.insertCell(6);
-
-actionCell.innerHTML = `
-<button onclick="printReceipt(${index})">🧾</button>
-<button onclick="editStudent(${index})">Edit</button>
-<button onclick="deleteStudent(${index})">Delete</button>
-`;
-
-row.insertCell(7).innerText = student.studentAddress;
-
-        totalStudents++;
-
-        
-    });
-
-    document.getElementById("studentCount").innerText =
-        totalStudents;
-
-   
-}
-
-function deleteStudent(index) {
-
-    if (confirm("Delete Student?")) {
-
-        students.splice(index, 1);
-
-        localStorage.setItem(
-            "students",
-            JSON.stringify(students)
-        );
-
-        loadStudents();
-    }
-}
-
-function editStudent(index) {
-
-    let student =
-        students[index];
-
-    document.getElementById("name").value =
-        student.name;
-
-    document.getElementById("age").value =
-        student.age;
-
-    document.getElementById("course").value =
-        student.course;
-
-    document.getElementById("totalFees").value =
-        student.totalFees;
-
-    document.getElementById("paidFees").value =
-        student.paidFees;
-
-    students.splice(index, 1);
-
-    localStorage.setItem(
-        "students",
-        JSON.stringify(students)
-    );
-
-    loadStudents();
-
-    showForm();
-}
-
-function searchStudent() {
-
-    let search =
-        prompt("Enter Student Name");
-
-    if (!search) return;
-
-    let found =
-        students.find(student =>
-            student.name.toLowerCase() ===
-            search.toLowerCase()
-        );
-
-    if (found) {
-        alert("Student Found");
-    } else {
-        alert("Student Not Found");
-    }
-}
-
-function showRecords() {
-
-    let table =
-        document.getElementById("studentTable");
-
-    if (table.style.display === "none") {
-        table.style.display = "table";
-    } else {
-        table.style.display = "none";
-    }
-}
-
-function printReceipt(index) {
-
-    let student = students[index];
-
-    let coachingName = localStorage.getItem("coachingName") || "My Coaching";
-    let ownerName = localStorage.getItem("ownerName") || "";
-    let mobile = localStorage.getItem("mobile") || "";
-    let address = localStorage.getItem("address") || "";
-    let logoData = localStorage.getItem("logoData") || "";
-
-    let w = window.open("", "", "width=800,height=700");
-
-    w.document.write(`
-    <html>
-    <style>
-img{
-    width:180px;
-}
-
-*{
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-}
-</style>
-    <body style="font-family:Arial;padding:20px;">
-
-    <table style="width:100%;">
-        <tr>
-            <td>
-                <h1>${coachingName}</h1>
-                <p>${address}</p>
-                <p>${ownerName}</p>
-                <p>${mobile}</p>
-            </td>
-
-            <td style="text-align:right;">
-                ${logoData ? `<img src="${logoData}" width="180">` : ""}
-            </td>
-        </tr>
-    </table>
-
-    <hr>
-
-    <h2>Fee Receipt</h2>
-
-    <table style="width:100%;border-collapse:collapse;">
-        <tr>
-            <td style="border:1px solid black;padding:10px;"><b>Name</b></td>
-            <td style="border:1px solid black;padding:10px;">${student.name}</td>
-        </tr>
-
-        <tr>
-            <td style="border:1px solid black;padding:10px;"><b>Course</b></td>
-            <td style="border:1px solid black;padding:10px;">${student.course}</td>
-        </tr>
-
-        <tr>
-            <td style="border:1px solid black;padding:10px;"><b>Total Fees</b></td>
-            <td style="border:1px solid black;padding:10px;">₹${student.totalFees}</td>
-        </tr>
-
-        <tr>
-            <td style="border:1px solid black;padding:10px;"><b>Paid Fees</b></td>
-            <td style="border:1px solid black;padding:10px;">₹${student.paidFees}</td>
-        </tr>
-
-        <tr>
-            <td style="border:1px solid black;padding:10px;"><b>Due Fees</b></td>
-            <td style="border:1px solid black;padding:10px;">₹${student.dueFees}</td>
-        </tr>
-    </table>
-          <p><b>Date & Time:</b> ${new Date().toLocaleString()}</p>
-    </body>
-    </html>
-    `);
-
-    w.document.close();
-    w.print();
 }
 
 
-window.onload = function () {
+//==============================
+// LOAD SETUP
+//==============================
 
-    loadStudents();
-    loadDashboard();
-    loadFeesRecords();
+function loadSetup() {
+
     document.getElementById("coachingName").value =
         localStorage.getItem("coachingName") || "";
 
@@ -351,324 +152,1038 @@ window.onload = function () {
     document.getElementById("address").value =
         localStorage.getItem("address") || "";
 
-    let logo =
-        localStorage.getItem("logoData");
+    document.getElementById("coachingTitle").innerText =
+        localStorage.getItem("coachingName") ||
+        "R S Computer Coaching";
+
+    let logo = localStorage.getItem("logo");
 
     if (logo) {
-        document.getElementById("logoPreview").src =
-            logo;
+
+        document.getElementById("logoPreview").src = logo;
+
     }
-};
-function showFeesForm() {
 
-    document.getElementById("feesForm").style.display = "block";
+}
+//=====================================
+// COURSE MANAGEMENT
+//=====================================
 
-    let select =
-        document.getElementById("studentSelect");
+function saveCourse() {
 
-    select.innerHTML = "";
+    let courseName = document.getElementById("courseName").value.trim();
+    let courseFees = Number(document.getElementById("courseFees").value);
 
-    students.forEach((student, index) => {
+    if (courseName === "" || courseFees <= 0) {
+        alert("Please enter Course Name and Fees.");
+        return;
+    }
 
-        select.innerHTML +=
-        `<option value="${index}">
-            ${student.name}
-        </option>`;
+    courses.push({
+        name: courseName,
+        fees: courseFees
     });
 
-    if(students.length > 0){
-        document.getElementById("feesCourse").value =
-            students[0].course;
-    }
+    localStorage.setItem("courses", JSON.stringify(courses));
+
+    document.getElementById("courseName").value = "";
+    document.getElementById("courseFees").value = "";
+
+    loadCourseTable();
+    loadCourses();
+
+    alert("Course Saved Successfully");
 }
 
-document.addEventListener("change", function(e){
 
-    if(e.target.id === "studentSelect"){
+//=====================================
+// LOAD COURSE TABLE
+//=====================================
 
-        let index = e.target.value;
+function loadCourseTable() {
 
-        document.getElementById("feesCourse").value =
-            students[index].course;
-    }
-});
-
-function saveFees() {
-
-    let feesRecords =
-        JSON.parse(localStorage.getItem("feesRecords")) || [];
-
-    let index = Number(document.getElementById("studentSelect").value);
-
-    let paidFees = Number(document.getElementById("paidFees").value);
-
-    let student = students[index];
-
-    let totalFees = Number(student.totalFees || 0);
-
-    let dueFees = totalFees - paidFees;
-
-    // Student data update
-    student.paidFees = paidFees;
-    student.dueFees = dueFees;
-
-    localStorage.setItem("students", JSON.stringify(students));
-
-    // Fees Record Save
-    feesRecords.push({
-        studentName: student.name,
-        course: student.course,
-        month: document.getElementById("feesMonth").value,
-        totalFees: totalFees,
-        paidFees: paidFees,
-        dueFees: dueFees
-    });
-
-    localStorage.setItem("feesRecords", JSON.stringify(feesRecords));
-
-    loadFeesRecords();
-    loadDashboard();
-
-    alert("Fees Saved");
-
-    printReceipt(index);
-}
-function loadDashboard() {
-
-    let feesRecords =
-        JSON.parse(localStorage.getItem("feesRecords")) || [];
-
-    console.log("Fees Records:", feesRecords);
-
-    let totalFees = 0;
-    let totalDue = 0;
-
-    feesRecords.forEach(record => {
-
-        totalFees += Number(record.paidFees || 0);
-
-        totalDue += Number(record.dueFees || 0);
-    });
-
-    console.log("Total Fees =", totalFees);
-    console.log("Total Due =", totalDue);
-
-    document.getElementById("totalFeeAmount").innerText =
-        "₹" + totalFees;
-
-    document.getElementById("dueFeeAmount").innerText =
-        "₹" + totalDue;
-
-    document.getElementById("studentCount").innerText =
-        students.length;
-}
-function loadStudentFees(index){
-
-    let student = students[index];
-
-    document.getElementById("feesCourse").value =
-        student.course || "";
-
-    document.getElementById("totalFees").value =
-        student.totalFees || "";
-
-    document.getElementById("paidFees").value =
-        student.paidFees || "";
-}
-function loadFeesRecords() {
-
-    let feesRecords =
-        JSON.parse(localStorage.getItem("feesRecords")) || [];
-
-    let table =
-        document.getElementById("feesTable");
+    let table = document.getElementById("courseTable");
 
     table.innerHTML = `
-<tr>
-<th>Student Name</th>
-<th>Course</th>
-<th>Month</th>
-<th>Total Fees</th>
-<th>Paid Fees</th>
-<th>Due Fees</th>
-<th>Action</th>
-</tr>`;
+    <tr>
+        <th>Course</th>
+        <th>Fees</th>
+        <th>Action</th>
+    </tr>
+    `;
 
-    feesRecords.forEach((record, index) => {
+    courses.forEach((course, index) => {
 
         let row = table.insertRow();
 
-        row.insertCell(0).innerText = record.studentName;
-        row.insertCell(1).innerText = record.course;
-        row.insertCell(2).innerText = record.month;
-        row.insertCell(3).innerText = "₹" + record.totalFees;
-        row.insertCell(4).innerText = "₹" + record.paidFees;
-        row.insertCell(5).innerText = "₹" + record.dueFees;
+        row.insertCell(0).innerText = course.name;
+        row.insertCell(1).innerText = "₹" + course.fees;
 
-       
-        row.insertCell(6).innerHTML = `
-<button onclick="printFeesReceipt(${index})">🧾</button>
-<button onclick="editFeesRecord(${index})">✏️</button>
-<button onclick="deleteFeesRecord(${index})">🗑️</button>
-`;
+        row.insertCell(2).innerHTML = `
+        <button class="action-btn edit-btn"
+        onclick="editCourse(${index})">
+        ✏️
+        </button>
+
+        <button class="action-btn delete-btn"
+        onclick="deleteCourse(${index})">
+        🗑️
+        </button>
+        `;
+
     });
 
 }
-function printFeesReceipt(index) {
 
-    let feesRecords =
-        JSON.parse(localStorage.getItem("feesRecords")) || [];
 
-    let record = feesRecords[index];
+//=====================================
+// LOAD COURSE DROPDOWN
+//=====================================
 
-    let coachingName = localStorage.getItem("coachingName") || "My Coaching";
-    let ownerName = localStorage.getItem("ownerName") || "";
-    let mobile = localStorage.getItem("mobile") || "";
-    let address = localStorage.getItem("address") || "";
-    let logoData = localStorage.getItem("logoData") || "";
+function loadCourses() {
 
-    let w = window.open("", "", "width=800,height=700");
+    let select = document.getElementById("course");
 
-    w.document.write(`
-    <html>
-    <head>
-    <style>
+    if (!select) return;
 
-    body{
-        font-family:Arial;
-        padding:20px;
-    }
+    select.innerHTML =
+    '<option value="">Select Course</option>';
 
-    table{
-        width:100%;
-        border-collapse:collapse;
-    }
+    courses.forEach(course => {
 
-    td{
-        border:1px solid black;
-        padding:10px;
-    }
+        select.innerHTML +=
+        `<option value="${course.name}">
+        ${course.name}
+        </option>`;
 
-    img{
-        width:120px;
-    }
-
-    *{
-        -webkit-print-color-adjust:exact !important;
-        print-color-adjust:exact !important;
-    }
-
-    </style>
-    </head>
-
-    <body>
-
-    <table style="border:none;">
-        <tr>
-            <td style="border:none;">
-                <h1>${coachingName}</h1>
-                <p>${address}</p>
-                <p>${ownerName}</p>
-                <p>${mobile}</p>
-            </td>
-
-            <td style="border:none;text-align:right;">
-                ${logoData ? `<img src="${logoData}">` : ""}
-            </td>
-        </tr>
-    </table>
-
-    <hr>
-
-    <h2 style="text-align:center;">Fees Receipt</h2>
-
-    <table>
-
-        <tr>
-            <td><b>Name</b></td>
-            <td>${record.studentName}</td>
-        </tr>
-
-        <tr>
-            <td><b>Course</b></td>
-            <td>${record.course}</td>
-        </tr>
-
-        <tr>
-            <td><b>Month</b></td>
-            <td>${record.month}</td>
-        </tr>
-
-        <tr>
-            <td><b>Total Fees</b></td>
-            <td>₹${record.totalFees}</td>
-        </tr>
-
-        <tr>
-            <td><b>Paid Fees</b></td>
-            <td>₹${record.paidFees}</td>
-        </tr>
-
-        <tr>
-            <td><b>Due Fees</b></td>
-            <td>₹${record.dueFees}</td>
-        </tr>
-
-    </table>
-
-    <br>
-
-    <b>Date :</b> ${new Date().toLocaleString()}
-
-    </body>
-    </html>
-    `);
-
-    w.document.close();
-    w.print();
-}
-function deleteFeesRecord(index){
-
-    if(confirm("Delete Fees Record?")){
-
-        let feesRecords =
-        JSON.parse(localStorage.getItem("feesRecords")) || [];
-
-        feesRecords.splice(index,1);
-
-        localStorage.setItem(
-            "feesRecords",
-            JSON.stringify(feesRecords)
-        );
-
-        loadFeesRecords();
-        loadDashboard();
-    }
+    });
 
 }
-function editFeesRecord(index){
 
-    let feesRecords =
-    JSON.parse(localStorage.getItem("feesRecords")) || [];
 
-    let record = feesRecords[index];
+//=====================================
+// EDIT COURSE
+//=====================================
 
-    document.getElementById("feesForm").style.display="block";
+function editCourse(index) {
 
-    let studentIndex = students.findIndex(
-        s => s.name === record.studentName
-    );
+    document.getElementById("courseName").value =
+    courses[index].name;
 
-    document.getElementById("studentSelect").value = studentIndex;
-    document.getElementById("feesMonth").value = record.month;
-    document.getElementById("paidFees").value = record.paidFees;
+    document.getElementById("courseFees").value =
+    courses[index].fees;
 
-    feesRecords.splice(index,1);
+    courses.splice(index,1);
 
     localStorage.setItem(
-        "feesRecords",
-        JSON.stringify(feesRecords)
+    "courses",
+    JSON.stringify(courses));
+
+    loadCourseTable();
+
+}
+
+
+//=====================================
+// DELETE COURSE
+//=====================================
+
+function deleteCourse(index){
+
+    if(confirm("Delete this course?")){
+
+        courses.splice(index,1);
+
+        localStorage.setItem(
+        "courses",
+        JSON.stringify(courses));
+
+        loadCourseTable();
+
+        loadCourses();
+
+    }
+
+}
+//=====================================
+// STUDENT MANAGEMENT
+//=====================================
+
+// Admission Number Generate
+function generateAdmissionNo() {
+
+    return "RS" + String(students.length + 1).padStart(4, "0");
+
+}
+
+// Add Student
+function addStudent() {
+
+    let name = document.getElementById("name").value.trim();
+    let fatherName = document.getElementById("fatherName").value.trim();
+    let dob = document.getElementById("dob").value;
+    let age = document.getElementById("age").value;
+    let course = document.getElementById("course").value;
+    let mobile = document.getElementById("mobileNo").value.trim();
+    let address = document.getElementById("studentAddress").value.trim();
+
+    if (
+        name == "" ||
+        fatherName == "" ||
+        dob == "" ||
+        age == "" ||
+        course == "" ||
+        mobile == ""
+    ) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    // Find Course Fees
+    let selectedCourse = courses.find(c => c.name === course);
+
+    let totalFees = selectedCourse ? selectedCourse.fees : 0;
+
+    students.push({
+
+        admissionNo: generateAdmissionNo(),
+
+        name,
+
+        fatherName,
+
+        dob,
+
+        age,
+
+        course,
+
+        mobile,
+
+        address,
+
+        admissionDate: new Date().toLocaleDateString(),
+
+        totalFees: totalFees,
+
+        paidFees: 0,
+
+        dueFees: totalFees
+
+    });
+
+    localStorage.setItem(
+        "students",
+        JSON.stringify(students)
     );
 
+    loadStudents();
+
+    loadStudentDropdown();
+
+    loadDashboard();
+
+    closeStudentForm();
+
+    document.getElementById("name").value="";
+document.getElementById("fatherName").value="";
+document.getElementById("dob").value="";
+document.getElementById("age").value="";
+document.getElementById("course").selectedIndex=0;
+document.getElementById("mobileNo").value="";
+document.getElementById("studentAddress").value="";
+
+    alert("Student Added Successfully");
+
+}
+
+
+
+//=====================================
+// LOAD STUDENTS
+//=====================================
+
+function loadStudents() {
+
+    let tbody =
+        document.querySelector("#studentTable tbody");
+
+    tbody.innerHTML = "";
+
+    students.forEach((student, index) => {
+
+        let row = tbody.insertRow();
+
+        row.innerHTML = `
+
+<td>${student.admissionNo}</td>
+
+<td>${student.name}</td>
+
+<td>${student.fatherName}</td>
+
+<td>${student.course}</td>
+
+<td>${student.mobile}</td>
+
+<td>${student.admissionDate}</td>
+
+<td>
+
+<span style="color:
+${student.dueFees==0?'green':'red'}">
+
+${student.dueFees==0?'Paid':'Due'}
+
+</span>
+
+</td>
+
+<td>
+
+<button class="action-btn receipt-btn"
+onclick="printReceipt(${index})">
+
+🧾
+
+</button>
+
+<button class="action-btn edit-btn"
+onclick="editStudent(${index})">
+
+✏️
+
+</button>
+
+<button class="action-btn delete-btn"
+onclick="deleteStudent(${index})">
+
+🗑️
+
+</button>
+
+</td>
+
+`;
+
+    });
+
+}
+//=====================================
+// LOAD STUDENT DROPDOWN
+//=====================================
+
+function loadStudentDropdown(){
+
+    let select=document.getElementById("studentSelect");
+
+    if(!select) return;
+
+    select.innerHTML="<option value=''>Select Student</option>";
+
+    students.forEach((student,index)=>{
+
+        select.innerHTML+=`
+        <option value="${index}">
+        ${student.admissionNo} - ${student.name}
+        </option>
+        `;
+
+    });
+
+}
+
+
+
+//=====================================
+// EDIT STUDENT
+//=====================================
+
+function editStudent(index){
+
+    let s=students[index];
+
+    document.getElementById("name").value=s.name;
+
+    document.getElementById("fatherName").value=s.fatherName;
+
+    document.getElementById("dob").value=s.dob;
+
+    document.getElementById("age").value=s.age;
+
+    document.getElementById("course").value=s.course;
+
+    document.getElementById("mobileNo").value=s.mobile;
+
+    document.getElementById("studentAddress").value=s.address;
+
+    students.splice(index,1);
+
+    localStorage.setItem(
+    "students",
+    JSON.stringify(students));
+
+    loadStudents();
+
+    showForm();
+
+}
+
+
+
+//=====================================
+// DELETE STUDENT
+//=====================================
+
+function deleteStudent(index){
+
+    if(confirm("Delete Student ?")){
+
+        students.splice(index,1);
+
+        localStorage.setItem(
+        "students",
+        JSON.stringify(students));
+
+        loadStudents();
+
+        loadDashboard();
+
+    }
+
+}
+
+
+
+//=====================================
+// SEARCH
+//=====================================
+
+function liveSearch(){
+
+    let input=document
+    .getElementById("searchBox")
+    .value
+    .toLowerCase();
+
+    let rows=document
+    .querySelectorAll("#studentTable tbody tr");
+
+    rows.forEach(row=>{
+
+        row.style.display=
+        row.innerText.toLowerCase().includes(input)
+        ?"":"none";
+
+    });
+
+}
+
+
+
+//=====================================
+// DASHBOARD
+//=====================================
+
+function loadDashboard(){
+
+    document.getElementById("studentCount").innerText=
+    students.length;
+
+    let total=0;
+
+    let due=0;
+
+    students.forEach(s=>{
+
+        total+=Number(s.paidFees);
+
+        due+=Number(s.dueFees);
+
+    });
+
+    document.getElementById("totalFeeAmount").innerText=
+    "₹"+total;
+
+    document.getElementById("dueFeeAmount").innerText=
+    "₹"+due;
+
+    document.getElementById("todayCollection").innerText=
+    "₹0";
+
+}
+//=====================================
+// RECEIPT NUMBER
+//=====================================
+
+function generateReceiptNo(){
+
+    return "REC"+String(feesRecords.length+1).padStart(4,"0");
+
+}
+
+
+
+//=====================================
+// SAVE FEES
+//=====================================
+
+function saveFees(){
+
+    let studentIndex=document.getElementById("studentSelect").value;
+
+    let month=document.getElementById("feesMonth").value;
+
+    let paid=parseFloat(document.getElementById("paidFees").value);
+
+    if(studentIndex=="" || month=="" || isNaN(paid)){
+
+        alert("Please fill all fields.");
+
+        return;
+
+    }
+
+    let student=students[studentIndex];
+
+    student.paidFees+=paid;
+
+    student.dueFees=student.totalFees-student.paidFees;
+
+    feesRecords.push({
+
+        receiptNo:generateReceiptNo(),
+
+        admissionNo:student.admissionNo,
+
+        name:student.name,
+
+        course:student.course,
+
+        month:month,
+
+        totalFees:student.totalFees,
+
+        paidFees:paid,
+
+        dueFees:student.dueFees,
+
+        date:new Date().toLocaleDateString()
+
+    });
+
+    localStorage.setItem("students",JSON.stringify(students));
+
+    localStorage.setItem("feesRecords",JSON.stringify(feesRecords));
+
     loadFeesRecords();
+
+    loadDashboard();
+
+    alert("Fees Saved Successfully");
+
+}
+//=====================================
+// LOAD FEES RECORDS
+//=====================================
+
+function loadFeesRecords(){
+
+    let tbody=document.querySelector("#feesTable tbody");
+
+    if(!tbody) return;
+
+    tbody.innerHTML="";
+
+    feesRecords.forEach((fee,index)=>{
+
+        let row=tbody.insertRow();
+
+        row.innerHTML=`
+
+<td>${fee.receiptNo}</td>
+
+<td>${fee.name}</td>
+
+<td>${fee.course}</td>
+
+<td>${fee.month}</td>
+
+<td>₹${fee.totalFees}</td>
+
+<td>₹${fee.paidFees}</td>
+
+<td>₹${fee.dueFees}</td>
+
+<td>${fee.date}</td>
+
+<td>
+
+<button class="action-btn receipt-btn"
+onclick="printReceipt(${index})">
+
+🧾
+
+</button>
+
+<button class="action-btn edit-btn"
+onclick="editFees(${index})">
+
+✏️
+
+</button>
+
+<button class="action-btn delete-btn"
+onclick="deleteFees(${index})">
+
+🗑️
+
+</button>
+
+</td>
+
+`;
+
+    });
+
+}
+//=====================================
+// LOAD FEES RECORDS
+//=====================================
+
+function loadFeesRecords(){
+
+    let tbody=document.querySelector("#feesTable tbody");
+
+    if(!tbody) return;
+
+    tbody.innerHTML="";
+
+    feesRecords.forEach((fee,index)=>{
+
+        let row=tbody.insertRow();
+
+        row.innerHTML=`
+
+<td>${fee.receiptNo}</td>
+
+<td>${fee.name}</td>
+
+<td>${fee.course}</td>
+
+<td>${fee.month}</td>
+
+<td>₹${fee.totalFees}</td>
+
+<td>₹${fee.paidFees}</td>
+
+<td>₹${fee.dueFees}</td>
+
+<td>${fee.date}</td>
+
+<td>
+
+<button class="action-btn receipt-btn"
+onclick="printReceipt(${index})">
+
+🧾
+
+</button>
+
+<button class="action-btn edit-btn"
+onclick="editFees(${index})">
+
+✏️
+
+</button>
+
+<button class="action-btn delete-btn"
+onclick="deleteFees(${index})">
+
+🗑️
+
+</button>
+
+</td>
+
+`;
+
+    });
+
+}
+//=====================================
+// PRINT RECEIPT
+//=====================================
+
+function printReceipt(index){
+
+    let fee = feesRecords[index];
+
+    let coachingName =
+    localStorage.getItem("coachingName") || "R S Computer Coaching";
+
+    let address =
+    localStorage.getItem("address") || "";
+
+    let mobile =
+    localStorage.getItem("mobile") || "";
+
+    let logo =
+    localStorage.getItem("logo") || "";
+
+    let win = window.open("","","width=900,height=700");
+
+    win.document.write(`
+
+<html>
+
+<head>
+
+<title>Receipt</title>
+
+<style>
+
+body{
+
+font-family:Arial;
+
+padding:30px;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:20px;
+
+}
+
+th,td{
+
+border:1px solid #000;
+
+padding:10px;
+
+text-align:left;
+
+}
+
+h1{
+
+color:#004aad;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<center>
+
+<img src="${logo}" width="90"><br>
+
+<h1>${coachingName}</h1>
+
+<p>${address}</p>
+
+<p>${mobile}</p>
+
+<hr>
+
+<h2>FEE RECEIPT</h2>
+
+</center>
+
+<table>
+
+<tr>
+
+<th>Receipt No</th>
+
+<td>${fee.receiptNo}</td>
+
+</tr>
+
+<tr>
+
+<th>Student</th>
+
+<td>${fee.name}</td>
+
+</tr>
+
+<tr>
+
+<th>Course</th>
+
+<td>${fee.course}</td>
+
+</tr>
+
+<tr>
+
+<th>Month</th>
+
+<td>${fee.month}</td>
+
+</tr>
+
+<tr>
+
+<th>Total Fees</th>
+
+<td>₹${fee.totalFees}</td>
+
+</tr>
+
+<tr>
+
+<th>Paid Fees</th>
+
+<td>₹${fee.paidFees}</td>
+
+</tr>
+
+<tr>
+
+<th>Due Fees</th>
+
+<td>₹${fee.dueFees}</td>
+
+</tr>
+
+<tr>
+
+<th>Date</th>
+
+<td>${fee.date}</td>
+
+</tr>
+
+</table>
+
+<br><br>
+
+<div style="display:flex;justify-content:space-between;">
+
+<span>Student Signature</span>
+
+<span>Authorized Signature</span>
+
+</div>
+
+</body>
+
+</html>
+
+`);
+
+    win.print();
+
+}
+//=====================================
+// BACKUP DATA
+//=====================================
+
+function backupData(){
+
+    let data={
+
+        students,
+
+        courses,
+
+        feesRecords,
+
+        coachingName:localStorage.getItem("coachingName"),
+
+        ownerName:localStorage.getItem("ownerName"),
+
+        mobile:localStorage.getItem("mobile"),
+
+        address:localStorage.getItem("address"),
+
+        logo:localStorage.getItem("logo")
+
+    };
+
+    let blob=new Blob([JSON.stringify(data,null,2)],{
+        type:"application/json"
+    });
+
+    let a=document.createElement("a");
+
+    a.href=URL.createObjectURL(blob);
+
+    a.download="RS_Coaching_Backup.json";
+
+    a.click();
+
+}
+
+
+
+//=====================================
+// RESTORE
+//=====================================
+
+function restoreData(){
+
+    document.getElementById("restoreFile").click();
+
+}
+
+function restoreBackup(e){
+
+    let file=e.target.files[0];
+
+    if(!file) return;
+
+    let reader=new FileReader();
+
+    reader.onload=function(){
+
+        let data=JSON.parse(reader.result);
+
+        students=data.students||[];
+
+        courses=data.courses||[];
+
+        feesRecords=data.feesRecords||[];
+
+        localStorage.setItem("students",JSON.stringify(students));
+
+        localStorage.setItem("courses",JSON.stringify(courses));
+
+        localStorage.setItem("feesRecords",JSON.stringify(feesRecords));
+
+        localStorage.setItem("coachingName",data.coachingName||"");
+
+        localStorage.setItem("ownerName",data.ownerName||"");
+
+        localStorage.setItem("mobile",data.mobile||"");
+
+        localStorage.setItem("address",data.address||"");
+
+        localStorage.setItem("logo",data.logo||"");
+
+        location.reload();
+
+    }
+
+    reader.readAsText(file);
+
+}
+
+
+
+//=====================================
+// EXPORT STUDENTS CSV
+//=====================================
+
+function exportStudents(){
+
+    let csv="Admission No,Name,Father,Course,Mobile,Total Fees,Paid,Due\n";
+
+    students.forEach(s=>{
+
+        csv+=`${s.admissionNo},${s.name},${s.fatherName},${s.course},${s.mobile},${s.totalFees},${s.paidFees},${s.dueFees}\n`;
+
+    });
+
+    downloadCSV(csv,"Students.csv");
+
+}
+
+
+
+//=====================================
+// EXPORT FEES CSV
+//=====================================
+
+function exportFees(){
+
+    let csv="Receipt,Student,Course,Month,Paid,Due,Date\n";
+
+    feesRecords.forEach(f=>{
+
+        csv+=`${f.receiptNo},${f.name},${f.course},${f.month},${f.paidFees},${f.dueFees},${f.date}\n`;
+
+    });
+
+    downloadCSV(csv,"Fees_Report.csv");
+
+}
+
+
+
+//=====================================
+// DOWNLOAD CSV
+//=====================================
+
+function downloadCSV(csv,fileName){
+
+    let blob=new Blob([csv],{
+        type:"text/csv"
+    });
+
+    let a=document.createElement("a");
+
+    a.href=URL.createObjectURL(blob);
+
+    a.download=fileName;
+
+    a.click();
+
+}
+
+
+
+//=====================================
+// PRINT STUDENTS
+//=====================================
+
+function printAllStudents(){
+
+    window.print();
+
+}
+
+
+
+//=====================================
+// PRINT FEES REPORT
+//=====================================
+
+function printFeesReport(){
+
+    document.getElementById("feesRecords").style.display="block";
+
+    window.print();
+
+}
+
+
+
+//=====================================
+// FILTER FEES MONTH
+//=====================================
+
+function filterFees(){
+
+    let month=document.getElementById("filterMonth").value;
+
+    let rows=document.querySelectorAll("#feesTable tbody tr");
+
+    rows.forEach(row=>{
+
+        row.style.display=row.innerText.includes(month)?"":"none";
+
+    });
+
 }
